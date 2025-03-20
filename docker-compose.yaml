@@ -1,0 +1,33 @@
+version: '3.8'
+name: "Transcription-Service"
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/uploads:/app/uploads
+      - ./backend/data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+      - WATCHFILES_FORCE_POLLING=true
+    restart: unless-stopped
+    command: uvicorn app.main:app --host 0.0.0.0 --port ${BACKEND_PORT:-8000} --reload --reload-dir /app/src
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ${FRONTEND_DOCKERFILE:-docker/Dockerfile.frontend-dev}
+    ports:
+      - "${FRONTEND_PORT:-4550}:4550"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+    stdin_open: true
+    tty: true
+    restart: unless-stopped

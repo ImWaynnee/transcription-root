@@ -6,9 +6,9 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./data/transcriptions.db"
     UPLOAD_DIR: str = "uploads"
     MAX_CONCURRENT_PROCESSING: int = 10
-    PORT: int = 8000  # Default port
-
+    BACKEND_PORT: int = 8000  # Default backend port
+    FRONTEND_PORT: int = 4550 # Default frontend port
     class Config:
-        env_file = ".env"  # Ensure this is set to read from .env
+        env_file = ".env"
 
-settings = Settings() 
+settings = Settings()

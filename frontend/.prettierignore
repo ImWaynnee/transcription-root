@@ -1,0 +1,10 @@
+node_modules/
+dist/
+build/
+public/
+output/
+.history/
+.nuxt/
+.output/
+.git/
+.gitignore

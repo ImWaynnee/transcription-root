@@ -1,4 +1,4 @@
-from fastapi import UploadFile, Depends, HTTPException
+from fastapi import UploadFile, Depends, HTTPException, Query, APIRouter
 from sqlalchemy.orm import Session
 from typing import List, Dict, Any
 import asyncio
@@ -8,6 +8,9 @@ from app.lib.audio_processor import process_audio_file
 from app.core.config import settings
 from app.models.transcription import Transcription
 from app.schemas.transcription import TranscriptionResponse
+from app.utils.pagination import paginate_query  # Import the utility function
+
+router = APIRouter()
 
 async def transcribe_files(
     files: List[UploadFile],
@@ -26,7 +29,7 @@ async def transcribe_files(
 
     # Create a semaphore to limit concurrent processing
     semaphore = asyncio.Semaphore(settings.MAX_CONCURRENT_PROCESSING)
-    
+
     async def process_with_semaphore(file: UploadFile) -> Dict:
         async with semaphore:
             try:
@@ -36,37 +39,53 @@ async def transcribe_files(
                     "filename": file.filename,
                     "error": str(e)
                 }
-    
+
     # Process files concurrently with semaphore limit
     results = await asyncio.gather(
         *[process_with_semaphore(file) for file in files]
     )
-    
+
     return {
         "total": len(files),
         "successful": len([r for r in results if "error" not in r]),
         "results": results
     }
 
-def index_transcriptions(db: Session) -> List[Transcription]:
-    """
-    Get all transcriptionss
-    """
-    return db.query(Transcription).all()
-
-def search_transcriptions(filename: str, db: Session) -> List[TranscriptionResponse]:
-    """
-    Search transcriptions by filename pattern
-    """
-    transcriptions = db.query(Transcription).filter(
-        Transcription.filename.ilike(f"%{filename}%")
-    ).all()
-    
-    return [
+@router.get("/transcriptions", response_model=Dict[str, Any])
+def get_transcriptions(
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1),
+    db: Session = Depends(get_db)
+) -> Dict[str, Any]:
+    query = db.query(Transcription)
+    paginated_data = paginate_query(query, page, limit)
+    paginated_data["results"] = [
         TranscriptionResponse(
             id=transcription.id,
             filename=transcription.filename,
             transcription=transcription.transcribed_text
         )
-        for transcription in transcriptions
-    ] 
+        for transcription in paginated_data["results"]
+    ]
+    return paginated_data
+
+@router.get("/search", response_model=Dict[str, Any])
+def search_transcriptions(
+    filename: str,
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1),
+    db: Session = Depends(get_db)
+) -> Dict[str, Any]:
+    query = db.query(Transcription).filter(
+        Transcription.filename.ilike(f"%{filename}%")
+    )
+    paginated_data = paginate_query(query, page, limit)
+    paginated_data["results"] = [
+        TranscriptionResponse(
+            id=transcription.id,
+            filename=transcription.filename,
+            transcription=transcription.transcribed_text
+        )
+        for transcription in paginated_data["results"]
+    ]
+    return paginated_data

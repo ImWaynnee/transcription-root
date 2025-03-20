@@ -1,13 +1,13 @@
 import os
-from fastapi import APIRouter, UploadFile, File, Depends
+from fastapi import APIRouter, UploadFile, File, Depends, Query
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Dict, Any
 
 from app.core.config import settings
 from app.db.session import get_db
 from app.controllers.transcription_controller import (
     transcribe_files,
-    index_transcriptions,
+    get_transcriptions,
     search_transcriptions
 )
 from app.schemas.transcription import TranscriptionResponse
@@ -26,27 +26,25 @@ async def transcribe_audio(
     """
     return await transcribe_files(files, db)
 
-@router.get("/transcriptions", response_model=List[TranscriptionResponse])
-async def get_transcriptions(db: Session = Depends(get_db)):
-    """
-    List all transcriptions with selected fields
-    """
-    transcriptions = index_transcriptions(db)
-    return [
-        TranscriptionResponse(
-            id=transcription.id,
-            filename=transcription.filename,
-            transcription=transcription.transcribed_text
-        )
-        for transcription in transcriptions
-    ]
-
-@router.get("/search", response_model=List[TranscriptionResponse])
-async def search_transcription_files(
-    filename: str,
+@router.get("/transcriptions", response_model=Dict[str, Any])
+async def list_transcriptions(
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1),
     db: Session = Depends(get_db)
 ):
     """
-    Search transcriptions by original filename
+    List all transcriptions with pagination
     """
-    return search_transcriptions(filename, db) 
+    return get_transcriptions(page=page, limit=limit, db=db)
+
+@router.get("/search", response_model=Dict[str, Any])
+async def search_transcription_files(
+    filename: str,
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1),
+    db: Session = Depends(get_db)
+):
+    """
+    Search transcriptions by original filename with pagination
+    """
+    return search_transcriptions(filename=filename, page=page, limit=limit, db=db)
