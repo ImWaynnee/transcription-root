@@ -9,4 +9,7 @@ sqlalchemy==2.0.27
 aiofiles==23.2.1
 pydantic-settings==2.1.0
 watchfiles==0.21.0
-librosa==0.10.1 
+librosa==0.10.1
+pytest==8.3.5
+pytest-asyncio==0.25.3
+pytest-cov==6.0.0

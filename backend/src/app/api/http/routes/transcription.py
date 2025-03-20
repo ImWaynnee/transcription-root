@@ -5,12 +5,11 @@ from typing import List, Dict, Any
 
 from app.core.config import settings
 from app.db.session import get_db
-from app.controllers.transcription_controller import (
+from app.api.http.controllers.transcription_controller import (
     transcribe_files,
     get_transcriptions,
     search_transcriptions
 )
-from app.schemas.transcription import TranscriptionResponse
 
 router = APIRouter()
 

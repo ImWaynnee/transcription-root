@@ -13,17 +13,17 @@ init_db()
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
-# Configure CORS
+# Configure CORS to allow only our frontend origin.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[f"http://localhost:{settings.FRONTEND_PORT}"],  # Allow your frontend origin
+    allow_origins=[f"http://localhost:{settings.FRONTEND_PORT}"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Include all routes without any prefix
-app.include_router(router, prefix="")  # explicitly set no prefix
+# Include our routes
+app.include_router(router, prefix="")
 
 # Post-startup logging
 logging.info("---------------------------")
