@@ -51,7 +51,6 @@ async def transcribe_files(
         "results": results
     }
 
-@router.get("/transcriptions", response_model=Dict[str, Any])
 def get_transcriptions(
     page: int = Query(1, ge=1),
     limit: int = Query(10, ge=1),
@@ -69,7 +68,6 @@ def get_transcriptions(
     ]
     return paginated_data
 
-@router.get("/search", response_model=Dict[str, Any])
 def search_transcriptions(
     filename: str,
     page: int = Query(1, ge=1),

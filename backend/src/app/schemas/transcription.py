@@ -1,9 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class TranscriptionResponse(BaseModel):
     id: int
     filename: str
     transcription: str
 
-    class Config:
-        orm_mode = True 
+    model_config = ConfigDict(from_attributes=True)
