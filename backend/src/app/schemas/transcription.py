@@ -1,5 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 
+# Public Schema for transcriptions
 class TranscriptionResponse(BaseModel):
     id: int
     filename: str

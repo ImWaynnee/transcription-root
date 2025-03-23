@@ -22,12 +22,12 @@ A transcription service application that converts English speech to text using t
 ### Assumptions
 
 - **Docker and Docker Compose**: Ensure both are installed on your system.
-- **Internet Connectivity**: Internet connectivity is required to download required files to build the containers.
+- **Internet Connectivity**: Required to download necessary files for building containers.
 - **Ports**:
   - Backend runs on port 8000.
   - Frontend runs on port 4550.
 
-### Backend Setup
+### Application Setup
 
 1. **Start the Container**:
 
@@ -36,7 +36,12 @@ A transcription service application that converts English speech to text using t
      ```bash
      docker-compose up --build -d
      ```
-   - It might take a few minutes to start due to large python dependencies (pytorch).
+   - It might take a few minutes to start due to large Python dependencies (PyTorch).
+
+2. **Ensure services are running**:
+
+   - You will see `INFO:     Application startup complete.` in the backend container terminal.
+   - You will see `VITE v6.1.0  ready in XXX ms` in the frontend container terminal.
 
 ### Testing
 

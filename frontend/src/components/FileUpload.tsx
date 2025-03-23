@@ -10,6 +10,7 @@ const FileUpload: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<any[]>([]);
 
+  // Upload properties configuration
   const uploadProps = {
     name: 'file',
     multiple: true,
@@ -29,6 +30,7 @@ const FileUpload: React.FC = () => {
     fileList,
   };
 
+  // Handle file transcription
   const handleTranscribe = async () => {
     if (fileList.length === 0) {
       message.warning('Please upload at least one file.');
@@ -62,11 +64,13 @@ const FileUpload: React.FC = () => {
     }
   };
 
+  // Reset file list and results
   const handleReset = () => {
     setFileList([]);
     setResults([]);
   };
 
+  // Render content based on state
   const renderContent = () => {
     if (loading) {
       return (

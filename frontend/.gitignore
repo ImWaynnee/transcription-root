@@ -8,8 +8,6 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
-dist-ssr
 *.local
 
 # Editor directories and files
@@ -25,3 +23,8 @@ dist-ssr
 
 # Extensions
 .history/
+
+# Build Files
+tsconfig.tsbuildinfo
+dist
+dist-ssr

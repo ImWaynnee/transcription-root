@@ -4,11 +4,11 @@ from typing import List, Dict, Any
 import asyncio
 
 from app.db.session import get_db
-from app.lib.audio_processor import process_audio_file
 from app.core.config import settings
 from app.models.transcription import Transcription
 from app.schemas.transcription import TranscriptionResponse
-from app.utils.pagination import paginate_query  # Import the utility function
+from app.utils.audio_processor import process_audio_file
+from app.utils.pagination import paginate_query
 
 router = APIRouter()
 
@@ -17,7 +17,7 @@ async def transcribe_files(
     db: Session = Depends(get_db)
 ) -> Dict[str, Any]:
     """
-    Controller for handling transcription requests with concurrent processing
+    Handle file uploads and return transcriptions.
     """
     # Check for duplicate filenames
     filenames = [file.filename for file in files]
@@ -56,6 +56,9 @@ def get_transcriptions(
     limit: int = Query(10, ge=1),
     db: Session = Depends(get_db)
 ) -> Dict[str, Any]:
+    """
+    Return all transcriptions.
+    """
     query = db.query(Transcription)
     paginated_data = paginate_query(query, page, limit)
     paginated_data["results"] = [
@@ -74,6 +77,9 @@ def search_transcriptions(
     limit: int = Query(10, ge=1),
     db: Session = Depends(get_db)
 ) -> Dict[str, Any]:
+    """
+    Return transcriptions filtered by filename provided.
+    """
     query = db.query(Transcription).filter(
         Transcription.filename.ilike(f"%{filename}%")
     )

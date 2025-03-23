@@ -15,7 +15,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: parseInt(process.env.FRONTEND_PORT || '4550'), // Ensure a string is always passed
+    port: parseInt(process.env.FRONTEND_PORT || '4550'), // Default our Frontend port to 4550
     host: '0.0.0.0', // Ensure the server is accessible from outside the container
     watch: {
       usePolling: true, // Use polling to detect changes in Docker

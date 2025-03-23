@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     BACKEND_PORT: int = 8000  # Default backend port
     FRONTEND_PORT: int = 4550 # Default frontend port
 
-    # Use ConfigDict for configuration
+    # Use our .env.test file if in testing environment.
     model_config: ConfigDict = ConfigDict(
         env_file=".env" if os.getenv("ENVIRONMENT") != "test" else ".env.test"
     )

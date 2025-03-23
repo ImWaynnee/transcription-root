@@ -1,4 +1,3 @@
-import React from 'react';
 import SearchTranscriptions from '@components/SearchTranscriptions';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
@@ -6,6 +5,7 @@ import '@testing-library/jest-dom';
 
 import { mockFetch } from './utils/mock-fetch';
 
+// Mock the matchMedia function for tests
 beforeAll(() => {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
@@ -22,6 +22,7 @@ beforeAll(() => {
   });
 });
 
+// Set up a mock fetch response before each test
 beforeEach(() => {
   global.fetch = mockFetch({
     total_records: 1,
@@ -40,6 +41,7 @@ beforeEach(() => {
   });
 });
 
+// Mock environment variables
 jest.mock('@constants/environment', () => ({
   VITE_API_URL: 'http://localhost:8000',
 }));
