@@ -1,6 +1,6 @@
-# About
+# Transcription Service
 
-A transcription service application that converts speech to text using the whisper-tiny model.
+A transcription service application that converts English speech to text using the Whisper-tiny model.
 
 ## Features
 
@@ -12,42 +12,55 @@ A transcription service application that converts speech to text using the whisp
 
 ## Tech Stack
 
-- Backend: Python FastAPI
-- Speech Recognition: Whisper (tiny model)
-- Database: SQLite
+- **Frontend**: React, Vite, Ant Design
+- **Backend**: Python, FastAPI
+- **Speech Recognition**: Whisper (tiny model)
+- **Database**: SQLite
 
 ## Setup
 
-Pre-requisites:
+### Assumptions
 
-- This repo uses Docker and docker-compose. Please make sure those are installed.
+- **Docker and Docker Compose**: Ensure both are installed on your system.
+- **Internet Connectivity**: Internet connectivity is required to download required files to build the containers.
+- **Ports**:
+  - Backend runs on port 8000.
+  - Frontend runs on port 4550.
 
-Note the build might take over 5 minutes due to the pytorch library having large file size.
+### Backend Setup
 
-### Backend
+1. **Start the Container**:
 
-The backend FastAPI Python server runs within the docker container. By default, the server will run on port 8000. If you'd like to change the port, please create an `.env` file in the backend folder, and populate it as such:
-
-```plaintext
-PORT=8080   # The port number
-```
-
-If using VSC for development, its recommended to create a virtual environment and install the dependencies in `backend/requirements.txt` to prevent import warnings.
-
-Libraries will be automatically installed within the docker instance.
-To start/stop the server docker container, run the following commands:
-
-```bash
-docker-compose up --build -d    # To start the server.
-docker-compose down             # To stop the server.
-```
+   - Navigate to the root directory of the project (/transcription-root).
+   - Run the following command to build and start the backend and frontend server:
+     ```bash
+     docker-compose up --build -d
+     ```
+   - It might take a few minutes to start due to large python dependencies (pytorch).
 
 ### Testing
 
-Use the following command to run the backend tests.
+#### Backend Unit Testing
 
-```bash
-# Ensure you are in the backend folder.
-cd /backend
-ENVIRONMENT=test pytest
-```
+- Navigate to the `backend` directory.
+- Run the tests using:
+  ```bash
+  ENVIRONMENT=test pytest
+  ```
+
+#### Frontend Unit Testing
+
+- Navigate to the `frontend` directory.
+- Run the tests using:
+  ```bash
+  npm run test
+  ```
+
+#### Accessing the UI for Manual Testing
+
+- Navigate to 'http://localhost:4550/' in your browser. (Tested on Chrome 134.0.6998.117)
+
+## Notes
+
+- The build process for the backend might take over 5 minutes due to the large file size of the PyTorch library.
+- Ensure your Docker and Docker Compose are up to date to avoid compatibility issues.
