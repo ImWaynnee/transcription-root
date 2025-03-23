@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { UploadOutlined, WarningOutlined } from '@ant-design/icons';
+import { VITE_API_URL } from '@constants/environment';
 import { Alert, Button, List, message, Spin, Typography, Upload } from 'antd';
 
 const { Text } = Typography;
@@ -41,7 +42,7 @@ const FileUpload: React.FC = () => {
     });
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/transcribe`, {
+      const response = await fetch(`${VITE_API_URL}/transcribe`, {
         method: 'POST',
         body: formData,
       });

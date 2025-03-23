@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ReloadOutlined } from '@ant-design/icons';
+import { VITE_API_URL } from '@constants/environment';
 import { Button, Input, Pagination, Spin, Table, Typography } from 'antd';
 
 const { Search } = Input;
@@ -25,7 +26,7 @@ const SearchTranscriptions: React.FC = () => {
       ? `/search?filename=${search}&page=${page}&limit=${pageSize}`
       : `/transcriptions?page=${page}&limit=${pageSize}`;
 
-    fetch(`${import.meta.env.VITE_API_URL}${endpoint}`)
+    fetch(`${VITE_API_URL}${endpoint}`)
       .then(response => response.json())
       .then(data => {
         setResults(data.results);
@@ -69,12 +70,7 @@ const SearchTranscriptions: React.FC = () => {
   return (
     <div className="p-4">
       <div className="flex flex-row gap-x-4 w-full">
-        <Search
-          className="w-full"
-          placeholder="Search by file name"
-          enterButton="Search"
-          onSearch={onSearch}
-        />
+        <Search placeholder="Search by file name" enterButton="Search" onSearch={onSearch} />
         <Button icon={<ReloadOutlined />} onClick={onRefresh}>
           Refresh
         </Button>

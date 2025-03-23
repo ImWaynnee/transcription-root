@@ -10,11 +10,12 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@components': path.resolve(__dirname, './src/components'),
+      '@constants': path.resolve(__dirname, './src/constants'),
       '@styles': path.resolve(__dirname, './src/styles'),
     },
   },
   server: {
-    port: parseInt(process.env.FRONTEND_PORT) || 4550, // Use the environment variable or default to 4550
+    port: parseInt(process.env.FRONTEND_PORT || '4550'), // Ensure a string is always passed
     host: '0.0.0.0', // Ensure the server is accessible from outside the container
     watch: {
       usePolling: true, // Use polling to detect changes in Docker
