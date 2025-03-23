@@ -43,6 +43,13 @@ A transcription service application that converts English speech to text using t
    - You will see `INFO:     Application startup complete.` in the backend container terminal.
    - You will see `VITE v6.1.0  ready in XXX ms` in the frontend container terminal.
 
+### Development (VSC)
+
+- For development purposes, please setup a virtual environment for the backend to prevent parsing errors
+  1. Ctrl + Shift + P, search for "Python: Select Interpreter".
+  2. "Create Virtual Environment...", and use Python 3.9.
+  3. Run `pip install -r backend/requirements.txt` (Adjust the file path accordingly).
+
 ### Testing
 
 #### Backend Unit Testing
